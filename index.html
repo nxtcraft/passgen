@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PassGen – Free Strong Password Generator | No Storage, 100% Secure</title>
+<meta name="description" content="Free strong password generator. Generate random passwords, passphrases and bulk passwords. Password strength checker. Generated in your browser — never stored, never sent.">
+<meta name="keywords" content="strong password generator, random password generator, secure password generator free, password strength checker, passphrase generator, bulk password generator">
+<link rel="canonical" href="https://passkit.in/">
+<meta property="og:title" content="PassGen – Free Strong Password Generator">
+<meta property="og:description" content="Generate strong random passwords, passphrases and bulk passwords. Strength checker included. 100% browser-based, never stored.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://passkit.in/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PassGen – Free Strong Password Generator">
+<meta name="twitter:description" content="Random password generator with strength checker. Browser-based, never stored. Free.">
+<link rel="stylesheet" href="css/main.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PassGen",
+  "url": "https://passkit.in/",
+  "description": "Free strong password generator and strength checker. Passwords generated in browser, never stored.",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Any (browser-based)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+  "featureList": ["Random password generator","Passphrase generator","Bulk password generator","Password strength checker","Custom length up to 128 chars","Uppercase, lowercase, numbers, symbols","100% browser-based","Never stored or transmitted"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is it safe to use an online password generator?",
+      "acceptedAnswer": { "@type": "Answer", "text": "PassGen generates passwords entirely in your browser using JavaScript's cryptographic random number generator (crypto.getRandomValues). No password is ever sent to a server, stored in a database, or transmitted over the internet. It is safe to use." }
+    },
+    {
+      "@type": "Question",
+      "name": "What makes a password strong?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A strong password is at least 12 characters long and contains a mix of uppercase letters, lowercase letters, numbers and special symbols. It should not be a dictionary word or contain personal information." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a passphrase and is it more secure than a password?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A passphrase is 4–6 random words joined together, like 'apple-river-cloud-seven'. It is easier to remember than a random string and can be very secure due to its length. A passphrase of 5 words is typically as secure as a 15-character random password." }
+    },
+    {
+      "@type": "Question",
+      "name": "How often should I change my passwords?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Security experts now recommend changing passwords only when there is a known breach, rather than on a fixed schedule. More important is using a unique strong password for every account and enabling two-factor authentication." }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <h1>🔐 PassGen</h1>
+  <p>Free Password Generator — Generated in your browser, never stored</p>
+</header>
+
+<div class="container">
+
+  <div class="tabs" style="margin-top:16px;">
+    <button class="tab active" onclick="switchTab('generator', this)">🎲 Generator</button>
+    <button class="tab" onclick="switchTab('passphrase', this)">🗝 Passphrase</button>
+    <button class="tab" onclick="switchTab('bulk', this)">📋 Bulk</button>
+    <button class="tab" onclick="switchTab('checker', this)">🔍 Checker</button>
+  </div>
+
+  <!-- GENERATOR TAB -->
+  <div id="tab-generator">
+    <div class="card">
+      <div class="pass-output">
+        <div class="pass-box" id="pass-output">Click Generate</div>
+        <button class="icon-btn" onclick="copyPass()" title="Copy">📋</button>
+        <button class="icon-btn" onclick="generate()" title="Regenerate">🔄</button>
+      </div>
+
+      <div class="strength-wrap">
+        <div class="strength-label">
+          <span>Password Strength</span>
+          <span id="strength-label">—</span>
+        </div>
+        <div class="strength-bar"><div class="strength-fill" id="strength-fill" style="width:0%"></div></div>
+      </div>
+
+      <div class="length-row">
+        <span style="font-size:13px; font-weight:700; color:var(--label);">Length</span>
+        <input type="range" id="length-slider" min="6" max="128" value="16" oninput="updateLength(this.value); generate()">
+        <span class="length-val" id="length-val">16</span>
+      </div>
+
+      <div class="option-row">
+        <div><div class="option-label">Uppercase Letters (A–Z)</div></div>
+        <button class="toggle on" id="opt-upper" onclick="toggleOpt(this)"></button>
+      </div>
+      <div class="option-row">
+        <div><div class="option-label">Lowercase Letters (a–z)</div></div>
+        <button class="toggle on" id="opt-lower" onclick="toggleOpt(this)"></button>
+      </div>
+      <div class="option-row">
+        <div><div class="option-label">Numbers (0–9)</div></div>
+        <button class="toggle on" id="opt-numbers" onclick="toggleOpt(this)"></button>
+      </div>
+      <div class="option-row">
+        <div>
+          <div class="option-label">Symbols</div>
+          <div class="option-sub">! @ # $ % ^ & * ( )</div>
+        </div>
+        <button class="toggle on" id="opt-symbols" onclick="toggleOpt(this)"></button>
+      </div>
+      <div class="option-row">
+        <div>
+          <div class="option-label">Exclude Ambiguous</div>
+          <div class="option-sub">Removes 0, O, l, 1, I</div>
+        </div>
+        <button class="toggle" id="opt-ambiguous" onclick="toggleOpt(this)"></button>
+      </div>
+
+      <button class="btn-gen" style="margin-top:14px;" onclick="generate()">🎲 Generate Password</button>
+    </div>
+  </div>
+
+  <!-- PASSPHRASE TAB -->
+  <div id="tab-passphrase" style="display:none;">
+    <div class="card">
+      <div class="phrase-output" id="phrase-output">Click Generate</div>
+
+      <div class="length-row">
+        <span style="font-size:13px; font-weight:700; color:var(--label);">Words</span>
+        <input type="range" id="word-count" min="3" max="8" value="5" oninput="updateWordCount(this.value); generatePhrase()">
+        <span class="length-val" id="word-count-val">5</span>
+      </div>
+
+      <div class="option-row">
+        <div><div class="option-label">Separator</div></div>
+        <select id="separator" onchange="generatePhrase()" style="padding:6px 10px; border:1px solid var(--border); border-radius:8px; font-size:14px; background:var(--surface2); color:var(--text);">
+          <option value="-">Hyphen  ( - )</option>
+          <option value=".">Dot  ( . )</option>
+          <option value="_">Underscore  ( _ )</option>
+          <option value=" ">Space</option>
+          <option value="">None</option>
+        </select>
+      </div>
+      <div class="option-row">
+        <div><div class="option-label">Capitalize Words</div></div>
+        <button class="toggle" id="phrase-cap" onclick="toggleOpt(this); generatePhrase()"></button>
+      </div>
+      <div class="option-row">
+        <div><div class="option-label">Add a Number</div></div>
+        <button class="toggle on" id="phrase-num" onclick="toggleOpt(this); generatePhrase()"></button>
+      </div>
+
+      <button class="btn-gen" style="margin-top:14px;" onclick="generatePhrase(); this.blur()">🎲 Generate Passphrase</button>
+      <div style="display:flex; gap:8px; margin-top:10px;">
+        <button class="btn-gen" style="background:none; border:1.5px solid var(--border); color:var(--label);" onclick="copyPhrase()">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BULK TAB -->
+  <div id="tab-bulk" style="display:none;">
+    <div class="card">
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:14px;">
+        <div>
+          <label style="font-size:12px; font-weight:700; color:var(--label); display:block; margin-bottom:4px;">Count</label>
+          <input type="number" id="bulk-count" value="10" min="1" max="100" style="width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:8px; font-size:14px; background:var(--surface2);">
+        </div>
+        <div>
+          <label style="font-size:12px; font-weight:700; color:var(--label); display:block; margin-bottom:4px;">Length</label>
+          <input type="number" id="bulk-length" value="16" min="6" max="64" style="width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:8px; font-size:14px; background:var(--surface2);">
+        </div>
+        <div>
+          <label style="font-size:12px; font-weight:700; color:var(--label); display:block; margin-bottom:4px;">Type</label>
+          <select id="bulk-type" style="width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:8px; font-size:13px; background:var(--surface2);">
+            <option value="all">All chars</option>
+            <option value="alphanum">Alpha + Num</option>
+            <option value="alpha">Alpha only</option>
+            <option value="num">Numbers only</option>
+            <option value="hex">Hex</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-gen" onclick="generateBulk()">📋 Generate Bulk Passwords</button>
+      <div class="bulk-output" id="bulk-output" style="margin-top:12px; display:none;"></div>
+      <button class="btn-gen" id="bulk-copy-btn" style="display:none; margin-top:8px; background:none; border:1.5px solid var(--border); color:var(--label);" onclick="copyBulk()">📋 Copy All</button>
+    </div>
+  </div>
+
+  <!-- CHECKER TAB -->
+  <div id="tab-checker" style="display:none;">
+    <div class="card">
+      <input type="password" class="check-input" id="check-input" placeholder="Type or paste a password to check..." oninput="checkStrength(this.value)">
+
+      <div class="strength-wrap">
+        <div class="strength-label">
+          <span>Strength</span>
+          <span id="check-label">—</span>
+        </div>
+        <div class="strength-bar"><div class="strength-fill" id="check-fill" style="width:0%"></div></div>
+      </div>
+
+      <div class="check-grid" id="check-criteria">
+        <div class="check-item" id="c-len"><span class="check-icon">⬜</span>At least 12 chars</div>
+        <div class="check-item" id="c-upper"><span class="check-icon">⬜</span>Uppercase letter</div>
+        <div class="check-item" id="c-lower"><span class="check-icon">⬜</span>Lowercase letter</div>
+        <div class="check-item" id="c-num"><span class="check-icon">⬜</span>Number</div>
+        <div class="check-item" id="c-sym"><span class="check-icon">⬜</span>Symbol</div>
+        <div class="check-item" id="c-nodict"><span class="check-icon">⬜</span>Not a common word</div>
+      </div>
+
+      <div id="crack-time" style="background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:12px; font-size:13px; color:var(--label); display:none;">
+        <strong>Estimated crack time:</strong> <span id="crack-val"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO -->
+  <div class="seo">
+    <h2>Free Password Generator — Strong, Random, Secure</h2>
+    <p>PassGen generates cryptographically random passwords using your browser's built-in <code>crypto.getRandomValues()</code> API. Passwords are generated entirely on your device and are <strong>never sent to any server</strong>, never logged, and never stored. Close the tab and they are gone forever.</p>
+
+    <h3>What makes a password strong?</h3>
+    <ul>
+      <li>At least 12 characters long (16+ recommended)</li>
+      <li>Mix of uppercase, lowercase, numbers and symbols</li>
+      <li>Not a dictionary word or personal information (name, DOB)</li>
+      <li>Unique for every account — never reuse passwords</li>
+    </ul>
+
+    <h3>Password vs Passphrase</h3>
+    <p>A passphrase like <em>apple-river-cloud-seven-moon</em> is easier to remember than <em>G#7kLm2@pQ9!</em> and can be just as secure due to its length. Use the Passphrase tab to generate memorable but strong passphrases.</p>
+
+    <h3>Frequently Asked Questions</h3>
+    <details>
+      <summary>Is it safe to generate passwords online?</summary>
+      <p>PassGen uses <code>crypto.getRandomValues()</code> — the same cryptographic API used by browsers for HTTPS. Passwords are generated locally in your browser and never leave your device. It is safe to use.</p>
+    </details>
+    <details>
+      <summary>How long should a password be?</summary>
+      <p>For most accounts, 16 characters is excellent. For critical accounts (bank, email), use 20+ characters with symbols. Shorter passwords (8–10 chars) are vulnerable to brute force attacks with modern hardware.</p>
+    </details>
+    <details>
+      <summary>Should I use a password manager?</summary>
+      <p>Yes. Use a password manager (Bitwarden, 1Password, KeePass) to store unique passwords for every site. PassGen helps you generate those passwords — the manager keeps them safe.</p>
+    </details>
+    <details>
+      <summary>What are the best special characters to include?</summary>
+      <p>Most sites accept: ! @ # $ % ^ & * ( ) – _ + = [ ] { } | ; : , . ? /. Some systems block certain symbols — if a site rejects your password, try without symbols or use the Alpha+Num option in the Bulk tab.</p>
+    </details>
+
+    <div style="margin-top:20px; text-align:center; font-size:12px; color:#9d174d;">
+      More free tools:
+      <a href="https://nxtcraft.github.io/devtoolbox/" style="color:#db2777;">DevToolbox</a> ·
+      <a href="https://nxtcraft.github.io/qrcraft/" style="color:#db2777;">QRCraft</a> ·
+      <a href="https://nxtcraft.github.io/wordkit/" style="color:#db2777;">WordKit</a> ·
+      <a href="https://nxtcraft.github.io/" style="color:#db2777;">All Tools</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>&copy; 2025 PassGen · <a href="https://nxtcraft.github.io/">NxtCraft Tools</a></footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
