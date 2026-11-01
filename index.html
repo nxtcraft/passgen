@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="manifest" href="/passkit/manifest.json">
+<meta name="theme-color" content="#64748b">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PassGen – Free Strong Password Generator | No Storage, 100% Secure</title>
 <meta name="description" content="Free strong password generator. Generate random passwords, passphrases and bulk passwords. Password strength checker. Generated in your browser — never stored, never sent.">
@@ -269,5 +272,6 @@
 <footer>&copy; 2025 PassGen · <a href="https://nxtcraft.github.io/">NxtCraft Tools</a></footer>
 
 <script src="js/app.js"></script>
+<script>if("serviceWorker"in navigator)navigator.serviceWorker.register("/passkit/sw.js");</script>
 </body>
 </html>
